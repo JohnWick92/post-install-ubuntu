@@ -33,7 +33,7 @@ NO_COLOR='\e[0m'
 # BASIC UPDATES AND UPGRADES
 
 apt_update(){
-  sudo apt update && sudo apt dist-upgrade -y
+  sudo apt update && sudo apt full-upgrade -y
 }
 
 # -------------------------------------------------------------------------------- #
@@ -93,14 +93,15 @@ remove_pre() {
 install_debs(){
 
 echo -e "${GREEN}[INFO] - Baixando pacotes .deb${NO_COLOR}"
-wget -c "$HYPER_URL" -p "$DOWNLOADS"
-wget -c "$EDGE_URL" -p "$DOWNLOADS"
-wget -c "$INSOMNIA_URL" -p "$DOWNLOADS"
-wget -c "$KOMOREBI_URL" -p "$DOWNLOADS"
-wget -c "$MAC_URL" -p "$DOWNLOADS"
+wget "$HYPER_URL"
+wget "$EDGE_URL"
+wget "$INSOMNIA_URL"
+wget "$KOMOREBI_URL"
+wget "$MAC_URL"
 
 ## RUNNING DPKG ##
 echo -e "${GREEN}[INFO] - Instalando pacotes .deb baixados${NO_COLOR}"
+cd $DOWNLOADS
 sudo dpkg -i $DOWNLOADS/*.deb
 
 # INSTALL WITH APT
@@ -126,8 +127,6 @@ echo "deb https://deb.beekeeperstudio.io stable main" | sudo tee /etc/apt/source
 # Update apt and install
 sudo apt update
 sudo apt install beekeeper-studio
-
-
 }
 
 ## Instalar docker ##
