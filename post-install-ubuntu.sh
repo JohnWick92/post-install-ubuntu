@@ -4,7 +4,7 @@
 # ------------------------------------------------------------------------ #
 #
 # HOW USE?
-#   $ ./ubuntu-postinstall.sh
+#   $ ./post-install-ubuntu.sh
 #
 # ----------------------------- VARIABLES ----------------------------- #
 
@@ -12,9 +12,11 @@
 HYPER_URL="https://releases.hyper.is/download/deb"
 INSOMNIA_URL="https://updates.insomnia.rest/downloads/ubuntu/latest?&app=com.insomnia.app&source=website"
 EDGE_URL="https://go.microsoft.com/fwlink/?linkid=2124602"
-KOMOREBI_URL="https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-bit.deb"
+KOMOREBI_URL="https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-#bit.deb"
 ## MacOs Shell+Gtk and icons for customization :D
 MAC_URL="https://github.com/JohnWick92/post-install-ubuntu/raw/main/MacOsShellIcons.zip"
+
+##Wget tá estranho vai ter q ser manual :(
 
 ##DIRECTORYS AND ARCHIVES
 
@@ -80,6 +82,11 @@ PROGRAMAS_PARA_INSTALAR=(
  
 )
 
+add_flatpak() {
+sudo apt install flatpak -y
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+}
+
 ## REMOVE PRE-INSTALLED PROGRAMS ##
 remove_pre() {
     sudo snap remove firefox
@@ -93,11 +100,11 @@ remove_pre() {
 install_debs(){
 
 echo -e "${GREEN}[INFO] - Baixando pacotes .deb${NO_COLOR}"
-wget "$HYPER_URL"
-wget "$EDGE_URL"
-wget "$INSOMNIA_URL"
-wget "$KOMOREBI_URL"
-wget "$MAC_URL"
+wget "$HYPER_URL" -p "$DOWNLOADS"
+wget "$EDGE_URL" -p "$DOWNLOADS"
+wget "$INSOMNIA_URL" -p "$DOWNLOADS"
+wget "$KOMOREBI_URL" -p "$DOWNLOADS"
+wget "$MAC_URL" -p "$DOWNLOADS"
 
 ## RUNNING DPKG ##
 echo -e "${GREEN}[INFO] - Instalando pacotes .deb baixados${NO_COLOR}"
@@ -126,12 +133,12 @@ echo "deb https://deb.beekeeperstudio.io stable main" | sudo tee /etc/apt/source
 
 # Update apt and install
 sudo apt update
-sudo apt install beekeeper-studio
+sudo apt install beekeeper-studio -y
 }
 
 ## Instalar docker ##
 install_docker() {
-     sudo apt-get remove docker docker-engine docker.io containerd runc
+     sudo apt-get remove docker docker-engine docker.io containerd runc -y
       
     sudo apt-get update
 
@@ -151,7 +158,7 @@ install_docker() {
 
     sudo apt-get update
 
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 }
 
 ## Instalando pacotes Flatpak ##
@@ -205,7 +212,7 @@ travas_apt
 apt_update
 travas_apt
 just_apt_update
-install_debs
+#install_debs
 install_beekeeper
 install_docker
 install_flatpaks
