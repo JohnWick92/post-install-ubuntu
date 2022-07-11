@@ -59,7 +59,7 @@ sudo apt update -y
 
 ##DEB SOFTWARES TO INSTALL
 
-PROGRAMAS_PARAINSTALAR=(
+PROGRAMAS_PARA_INSTALAR=(
     snapd
     gparted
     timeshift
