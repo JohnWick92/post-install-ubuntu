@@ -102,6 +102,7 @@ remove_pre() {
 install_debs(){
 
 echo -e "${GREEN}[INFO] - Baixando pacotes .deb${NO_COLOR}"
+cd ~/$DOWNLOADS
 wget -c "$HYPER_URL" -p "$DOWNLOADS"
 wget -c "$EDGE_URL" -p "$DOWNLOADS"
 wget -c "$INSOMNIA_URL" -p "$DOWNLOADS"
@@ -110,7 +111,6 @@ wget -c "$MAC_URL" -p "$DOWNLOADS"
 
 ## RUNNING DPKG ##
 echo -e "${GREEN}[INFO] - Instalando pacotes .deb baixados${NO_COLOR}"
-cd $DOWNLOADS
 sudo dpkg -i $DOWNLOADS/*.deb
 
 # INSTALL WITH APT
