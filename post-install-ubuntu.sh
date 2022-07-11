@@ -35,7 +35,7 @@ NO_COLOR='\e[0m'
 # BASIC UPDATES AND UPGRADES
 
 apt_update(){
-  sudo apt update && sudo apt full-upgrade -y
+  sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y
 }
 
 # -------------------------------------------------------------------------------- #
@@ -79,6 +79,7 @@ PROGRAMAS_PARA_INSTALAR=(
   ubuntu-restricted-extras
   zsh
   gnome-tweaks
+  gnome-session
  
 )
 
@@ -89,6 +90,7 @@ sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub
 
 ## REMOVE PRE-INSTALLED PROGRAMS ##
 remove_pre() {
+  
     sudo snap remove firefox
     sudo snap rm - r firefox
 }
@@ -100,11 +102,11 @@ remove_pre() {
 install_debs(){
 
 echo -e "${GREEN}[INFO] - Baixando pacotes .deb${NO_COLOR}"
-wget "$HYPER_URL" -p "$DOWNLOADS"
-wget "$EDGE_URL" -p "$DOWNLOADS"
-wget "$INSOMNIA_URL" -p "$DOWNLOADS"
-wget "$KOMOREBI_URL" -p "$DOWNLOADS"
-wget "$MAC_URL" -p "$DOWNLOADS"
+wget -c "$HYPER_URL" -p "$DOWNLOADS"
+wget -c "$EDGE_URL" -p "$DOWNLOADS"
+wget -c "$INSOMNIA_URL" -p "$DOWNLOADS"
+wget -c "$KOMOREBI_URL" -p "$DOWNLOADS"
+wget -c "$MAC_URL" -p "$DOWNLOADS"
 
 ## RUNNING DPKG ##
 echo -e "${GREEN}[INFO] - Instalando pacotes .deb baixados${NO_COLOR}"
@@ -138,11 +140,11 @@ sudo apt install beekeeper-studio -y
 
 ## Instalar docker ##
 install_docker() {
-     sudo apt-get remove docker docker-engine docker.io containerd runc -y
+     sudo apt remove docker docker-engine docker.io containerd runc -y
       
-    sudo apt-get update
+    sudo apt update
 
-    sudo apt-get install \
+    sudo apt install \
         ca-certificates \
         curl \
         gnupg \
@@ -156,9 +158,9 @@ install_docker() {
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-    sudo apt-get update
+    sudo apt update
 
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+    sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 }
 
 ## Instalando pacotes Flatpak ##
@@ -170,6 +172,7 @@ flatpak install flathub org.gimp.GIMP -y
 flatpak install flathub com.bitwarden.desktop -y
 flatpak install flathub org.telegram.desktop -y
 flatpak install flathub org.onlyoffice.desktopeditors -y
+flatpak install flathub com.spotify.Client -y
 }
 
 ## Instalando pacotes Snap ##
@@ -179,6 +182,7 @@ install_snaps(){
 echo -e "${GREEN}[INFO] - Instalando pacotes snap${NO_COLOR}"
 
 sudo snap install authy
+sudo snap install youtube-music-desktop-app
 
 }
 
@@ -215,6 +219,7 @@ just_apt_update
 #install_debs
 install_beekeeper
 install_docker
+add_flatpak
 install_flatpaks
 install_snaps
 remove_pre
