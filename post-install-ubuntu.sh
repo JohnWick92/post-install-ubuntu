@@ -1,34 +1,27 @@
 #!/usr/bin/env bash
 #
-#
 # ------------------------------------------------------------------------ #
 #
 # HOW USE?
 #   $ ./post-install-ubuntu.sh
 #
 # ----------------------------- VARIABLES ----------------------------- #
-
 ##URLS
 HYPER_URL="https://releases.hyper.is/download/deb"
 INSOMNIA_URL="https://updates.insomnia.rest/downloads/ubuntu/latest?&app=com.insomnia.app&source=website"
 EDGE_URL="https://go.microsoft.com/fwlink/?linkid=2124602"
-KOMOREBI_URL="https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-#bit.deb"
-## MacOs Shell+Gtk and icons for customization :D
-MAC_URL="https://github.com/JohnWick92/post-install-ubuntu/raw/main/MacOsShellIcons.zip"
-
-##Wget tá estranho vai ter q ser manual :(
+KOMOREBI_URL="https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-bit.deb"
+CODE_URL="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
 
 ##DIRECTORYS AND ARCHIVES
 
 DOWNLOADS="$HOME/Downloads"
-
 
 #COLORS
 
 RED='\e[1;91m'
 GREEN='\e[1;92m'
 NO_COLOR='\e[0m'
-
 
 #FUNCTIONS
 
@@ -53,7 +46,6 @@ fi
 
 # ------------------------------------------------------------------------------ #
 
-
 ## REMOVING POSSIBLES LOCKS FOR APT ##
 travas_apt(){
   sudo rm /var/lib/dpkg/lock-frontend
@@ -67,30 +59,27 @@ sudo apt update -y
 
 ##DEB SOFTWARES TO INSTALL
 
-PROGRAMAS_PARA_INSTALAR=(
-  snapd
-  gparted
-  timeshift
-  vlc
-  code
-  gnome-sushi 
-  git
-  wget
-  ubuntu-restricted-extras
-  zsh
-  gnome-tweaks
-  gnome-session
- 
+PROGRAMAS_PARAINSTALAR=(
+    snapd
+    gparted
+    timeshift
+    vlc
+    git
+    gnome-sushi
+    wget
+    ubuntu-retricted-extras
+    zsh
+    gnome-tweaks
+    gnome-session
 )
 
 add_flatpak() {
-sudo apt install flatpak -y
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    sudo apt install flatpak -y
+    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 ## REMOVE PRE-INSTALLED PROGRAMS ##
 remove_pre() {
-  
     sudo snap remove firefox
     sudo snap rm - r firefox
 }
@@ -103,15 +92,14 @@ install_debs(){
 
 echo -e "${GREEN}[INFO] - Baixando pacotes .deb${NO_COLOR}"
 cd ~/$DOWNLOADS
-wget -c "$HYPER_URL" -p "$DOWNLOADS"
-wget -c "$EDGE_URL" -p "$DOWNLOADS"
-wget -c "$INSOMNIA_URL" -p "$DOWNLOADS"
-wget -c "$KOMOREBI_URL" -p "$DOWNLOADS"
-wget -c "$MAC_URL" -p "$DOWNLOADS"
+wget -c -O hyper.deb "$HYPER_URL" 
+wget -c -O edge.deb "$EDGE_URL"
+wget -c -O insominia.deb "$INSOMNIA_URL"
+wget -c -O komorebi.deb "$KOMOREBI_URL"
 
 ## RUNNING DPKG ##
 echo -e "${GREEN}[INFO] - Instalando pacotes .deb baixados${NO_COLOR}"
-sudo dpkg -i $DOWNLOADS/*.deb
+sudo dpkg -i *.deb
 
 # INSTALL WITH APT
 echo -e "${GREEN}[INFO] - Instalando pacotes apt do repositório${NO_COLOR}"
@@ -140,8 +128,8 @@ sudo apt install beekeeper-studio -y
 
 ## Instalar docker ##
 install_docker() {
-     sudo apt remove docker docker-engine docker.io containerd runc -y
-      
+    sudo apt remove docker docker-engine docker.io containerd runc -y
+
     sudo apt update
 
     sudo apt install \
@@ -151,7 +139,7 @@ install_docker() {
         lsb-release
 
      sudo mkdir -p /etc/apt/keyrings
-
+    
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
     echo \
@@ -168,24 +156,21 @@ install_flatpaks(){
 
   echo -e "${GREEN}[INFO] - Instalando pacotes flatpak${NO_COLOR}"
 
-flatpak install flathub org.gimp.GIMP -y
-flatpak install flathub com.bitwarden.desktop -y
-flatpak install flathub org.telegram.desktop -y
-flatpak install flathub org.onlyoffice.desktopeditors -y
-flatpak install flathub com.spotify.Client -y
+flatpak install org.gimp.GIMP -y
+flatpak install com.bitwarden.desktop -y
+flatpak install org.telegram.desktop -y
+flatpak install org.onlyoffice.desktopeditors -y
+flatpak install com.spotify.Client -y
 }
 
 ## Instalando pacotes Snap ##
 
-install_snaps(){
+install_snaps() {
+    echo -e "${GREEN}[INFO] - Instalando pacotes snap${NO_COLOR}"
 
-echo -e "${GREEN}[INFO] - Instalando pacotes snap${NO_COLOR}"
-
-sudo snap install authy
-sudo snap install youtube-music-desktop-app
-
+    sudo snap install authy
+    sudo snap install youtube-music-desktop-app
 }
-
 
 # -------------------------------------------------------------------------- #
 # ----------------------------- POST-INSTALL ----------------------------- #
@@ -195,6 +180,7 @@ sudo snap install youtube-music-desktop-app
 
 system_clean(){
 
+sudo rm -rf hyper.deb insomnia.deb edge.deb komorebi.deb
 apt_update -y
 flatpak update -y
 sudo apt autoclean -y
@@ -207,8 +193,8 @@ nautilus -q
 # ----------------------------- CONFIGS EXTRAS ----------------------------- #
 
 
-# -------------------------------------------------------------------------------- #
-# -------------------------------EXECUTION----------------------------------------- #
+# -------------------------------------------------------------------------- #
+# ----------------------------- Execution ---------------------------------- #
 
 travas_apt
 testes_internet
@@ -216,7 +202,7 @@ travas_apt
 apt_update
 travas_apt
 just_apt_update
-#install_debs
+install_debs
 install_beekeeper
 install_docker
 add_flatpak
