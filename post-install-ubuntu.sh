@@ -65,7 +65,6 @@ PROGRAMAS_PARA_INSTALAR=(
     timeshift
     vlc
     git
-    gnome-sushi
     wget
     ubuntu-retricted-extras
     zsh
@@ -94,7 +93,7 @@ echo -e "${GREEN}[INFO] - Baixando pacotes .deb${NO_COLOR}"
 cd ~/$DOWNLOADS
 wget -c -O hyper.deb "$HYPER_URL" 
 wget -c -O edge.deb "$EDGE_URL"
-wget -c -O insominia.deb "$INSOMNIA_URL"
+wget -c -O insomnia.deb "$INSOMNIA_URL"
 wget -c -O komorebi.deb "$KOMOREBI_URL"
 
 ## RUNNING DPKG ##
